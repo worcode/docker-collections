@@ -49,8 +49,8 @@ RUN cd inotify \
 RUN apt upgrade -y
 
 # upgrade hex, add phoenix
-RUN mix local.hex --force \
-    mix archive.install https://github.com/phoenixframework/archives/raw/master/phx_new.ez --force
+RUN mix local.hex --force
+RUN mix archive.install https://github.com/phoenixframework/archives/raw/master/phx_new.ez --force
 
 # test elixir yarn command
 RUN elixir --version
