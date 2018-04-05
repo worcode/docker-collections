@@ -18,12 +18,11 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # set mirror site
 RUN sed -i -e 's/archive.ubuntu.com/mirrors.bangmod.cloud/g' /etc/apt/sources.list
 RUN sed -i -e 's/security.ubuntu.com/mirrors.bangmod.cloud/g' /etc/apt/sources.list
-RUN apt update && apt upgrade -y
+RUN apt update
 RUN apt install wget \
     curl \
     build-essential \
     apt-transport-https \
-    notify-tools \
     -y
 
 # add yarn repo
@@ -38,6 +37,16 @@ RUN apt update && apt install yarn \
     esl-erlang \
     elixir \
     -y
+
+# add inotify-tools
+RUN wget http://github.com/downloads/rvoicilas/inotify-tools/inotify-tools-3.14.tar.gz
+RUN mkdir -p inotify && tar -xvf inotify-tools-3.14.tar.gz -C inotify --strip 1
+RUN cd inotify \
+    && ./configure --prefix=/usr \
+    && make \
+    && make install
+
+RUN apt upgrade -y
 
 # set usr work DIR
 WORKDIR /usr/src/app
