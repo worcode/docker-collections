@@ -25,6 +25,9 @@ RUN apt install wget \
     apt-transport-https \
     -y
 
+# add node repo
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+
 # add yarn repo
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
@@ -33,10 +36,12 @@ RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources
 RUN wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb && dpkg -i erlang-solutions_1.0_all.deb
 
 # update and install repo
-RUN apt update && apt install yarn \
+RUN apt update && apt install nodejs \
     esl-erlang \
     elixir \
     -y
+RUN apt install --no-install-recommends yarn -y
+RUN echo "alias nodejs=node" >> ~/.bashrc
 
 # add inotify-tools
 RUN wget http://github.com/downloads/rvoicilas/inotify-tools/inotify-tools-3.14.tar.gz
