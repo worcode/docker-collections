@@ -23,6 +23,7 @@ RUN apt install wget \
     curl \
     build-essential \
     apt-transport-https \
+    notify-tools \
     -y
 
 # add yarn repo
