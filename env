@@ -1,0 +1,13 @@
+# APP
+APP_CONTANER_DIR=/usr/src/app
+
+# NODE
+NODE_ENV=development
+NODE_VERSION=8.11
+
+# YARN
+YARN_VERSION=1.6
+YARN_CACHE_DIR=/usr/local/share/.cache/yarn/v1
+
+# NUXT
+NUXT_PROJECT_DIR=/c/Users/XYZ/
