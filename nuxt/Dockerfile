@@ -12,6 +12,7 @@ RUN cp /etc/apt/sources.list /etc/apt/sources.list.ori \
     && apt update \
     && apt install -y \
         curl \
+        git \
         build-essential \
         locales \
         apt-utils \
@@ -28,7 +29,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
 RUN apt install -y --no-install-recommends yarn
 
 # modify .bashrc
-RUN echo $'\n\
+RUN echo '\n\
     alias nodejs=node \n\
     \n' \ 
     >> $HOME/.bashrc \
