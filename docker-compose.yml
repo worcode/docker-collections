@@ -10,6 +10,8 @@ services:
     volumes:
       - yarn_cache_vol:${YARN_CACHE_DIR}
       - ${NUXT_PROJECT_DIR}:${APP_CONTANER_DIR}
-    command: node
+    command: yarn dev
+    ports:
+      - 3000:3000
 volumes:
   yarn_cache_vol:
