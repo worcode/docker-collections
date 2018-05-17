@@ -1,17 +1,48 @@
 version: '3.5'
 services:
-  workspace:
+  mysql:
+    image: mysql:5.6
+    ports:
+      - 3306:3306
+    volumes:
+      - ${MYSQL_HOST_DATA_DIR}:${MYSQL_CONTAINER_DATA_DIR}
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+  nginx:
+    image: nginx:alpine
+    depends_on:
+      - wordpress
+    volumes:
+      - ${NGINX_HOST_CONF_DIR}:${NGINX_CONTAINER_CONF_DIR}
+      - ${WORDPRESS_PROJECT_DIR}:/var/www/html
+    ports:
+      - 8080:80
+  wordpress:
+    image: wordpress:php7.1-fpm
+    depends_on:
+      - mysql
+    ports:
+      - 9000:9000
+    volumes:
+      - ${WORDPRESS_PROJECT_DIR}:${WORDPRESS_CONTAINER_DIR}
+    environment:
+      - WORDPRESS_DB_HOST=mysql
+      - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
+      - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
+      - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
+      - WORDPRESS_DEBUG=${WORDPRESS_DEBUG}
+  nuxt:
     build:
       context: ./nuxt
-    image: slot-topping-workspace
-    environment:
-      - NODE_ENV=${NODE_ENV}
-      - APP_CONTANER_DIR=${APP_CONTANER_DIR}
+    image: nuxt-workspace
+    ports:
+      - 3000:3000
     volumes:
       - yarn_cache_vol:${YARN_CACHE_DIR}
       - ${NUXT_PROJECT_DIR}:${APP_CONTANER_DIR}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - APP_CONTANER_DIR=${APP_CONTANER_DIR}
     command: yarn dev
-    ports:
-      - 3000:3000
 volumes:
   yarn_cache_vol:
