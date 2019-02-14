@@ -1,0 +1,42 @@
+version: "3.6"
+services:
+  wordpress:
+    image: wordpress:php7.3-fpm
+    container_name: wordpress
+    ports:
+      - 9000:9000
+    depends_on:
+      - mysql
+    volumes:
+      - ${WORDPRESS_APP_DIR}:${WORDPRESS_CONTAINER_DIR}
+    environment:
+      - WORDPRESS_DB_HOST=mysql
+      - WORDPRESS_DB_USER=${MYSQL_DATABASE}
+      - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
+      - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
+      - WORDPRESS_DEBUG=${WORDPRESS_DEBUG}
+    restart: always
+  mysql:
+    image: mysql/mysql-server:5.7
+    container_name: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - database:${MYSQL_CONTAINER_DATA_DIR}
+      - ./stacks/databases:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    restart: always
+  server:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - 8080:80
+    depends_on:
+      - wordpress
+    volumes:
+      - ${NGINX_HOST_CONF_DIR}:/etc/nginx/conf.d
+      - ${WORDPRESS_APP_DIR}:/var/www/html
+    restart: always
+volumes:
+  database:

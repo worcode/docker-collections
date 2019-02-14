@@ -1,0 +1,6 @@
+CREATE USER IF NOT EXISTS 'host'@'%' IDENTIFIED BY 'host';
+CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED BY 'host';
+GRANT ALL ON *.* TO 'host'@'%';
+GRANT ALL ON *.* TO 'root'@'%';
+
+CREATE DATABASE IF NOT EXISTS `foo_db`;
