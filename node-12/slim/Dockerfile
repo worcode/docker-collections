@@ -5,7 +5,7 @@ ENV TZ=Asia/Bangkok
 WORKDIR /tmp
 
 RUN apt update -y \
-    && apt install -y curl sudo git gnupg build-essential \
+    && apt install -y curl sudo git gnupg2 build-essential \
     && git clone https://github.com/StackExchange/blackbox.git \
     && cd blackbox && make copy-install \
     && rm -rf /tmp/blackbox \ 
